@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{11D2FA49-F1B5-46E6-B25A-E03D4D40A314}</ProjectGuid>
+    <ProjectGuid>{387B5F16-1671-44E0-9A7E-E3FBA6D03D8B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Calendar</RootNamespace>
-    <AssemblyName>Calendar</AssemblyName>
+    <RootNamespace>Izhitsky.Nsudotnet.Calendar</RootNamespace>
+    <AssemblyName>Izhitsky.Nsudotnet.Calendar</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

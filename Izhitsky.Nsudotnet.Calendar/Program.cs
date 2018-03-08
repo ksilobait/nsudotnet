@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Calendar
+namespace Izhitsky.Nsudotnet.Calendar
 {
 	class Program
 	{
