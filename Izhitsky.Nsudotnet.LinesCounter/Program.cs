@@ -36,7 +36,7 @@ namespace Izhitsky.Nsudotnet.LinesCounter
 			string line;
 			while ((line = fileReader.ReadLine()) != null)
 			{
-				line = line.Trim();
+				line = line.Trim(); //TODO
 				if (line.Length == 0)
 				{
 					continue;
@@ -84,7 +84,7 @@ namespace Izhitsky.Nsudotnet.LinesCounter
 				}
 
 				// something after /**/ comment
-				line = line.Substring(firstMultilineCommentEnd + 2);
+				line = line.Substring(firstMultilineCommentEnd + 2); //TODO
 				firstMultilineComment = line.IndexOf("/*", StringComparison.Ordinal);
 				firstMultilineCommentEnd = line.IndexOf("*/", StringComparison.Ordinal);
 			}

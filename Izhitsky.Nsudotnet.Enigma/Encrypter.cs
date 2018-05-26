@@ -8,11 +8,11 @@ namespace Izhitsky.Nsudotnet.Enigma
 	internal class Encrypter : Crypter
 	{
 		private readonly string _inputFileName;
-		private readonly SymmetricAlgorithm _cryptMethod;
+		private readonly Crypter.EncryptionMethod _cryptMethod;
 		private readonly string _outputFileName;
-
+		
 		//file.txt rc2 output.bin
-		public Encrypter(string inputFileName, SymmetricAlgorithm cryptMethod, string outputFileName)
+		public Encrypter(string inputFileName, Crypter.EncryptionMethod cryptMethod, string outputFileName)
 		{
 			_inputFileName = inputFileName;
 			_cryptMethod = cryptMethod;
@@ -21,8 +21,49 @@ namespace Izhitsky.Nsudotnet.Enigma
 
 		internal override void Run()
 		{
-			DumpKeys(_cryptMethod, _inputFileName);
-			DumpEncodedFile(_cryptMethod, _inputFileName, _outputFileName);
+			switch (_cryptMethod)
+			{
+				case EncryptionMethod.Aes:
+				{
+					using (var aes = Aes.Create())
+					{
+						DumpKeys(aes, _inputFileName);
+						DumpEncodedFile(aes, _inputFileName, _outputFileName);
+					}
+					break;
+				}
+				case EncryptionMethod.Des:
+				{
+					using (var des = DES.Create())
+					{
+						DumpKeys(des, _inputFileName);
+						DumpEncodedFile(des, _inputFileName, _outputFileName);
+					}
+					break;
+				}
+				case EncryptionMethod.Rc2:
+				{
+					using (var rc2 = RC2.Create())
+					{
+						DumpKeys(rc2, _inputFileName);
+						DumpEncodedFile(rc2, _inputFileName, _outputFileName);
+					}
+					break;
+				}
+				case EncryptionMethod.Rijndael:
+				{
+					using (var rj = Rijndael.Create())
+					{
+						DumpKeys(rj, _inputFileName);
+						DumpEncodedFile(rj, _inputFileName, _outputFileName);
+					}
+					break;
+				}
+				default:
+				{
+					throw new UnreachableException();
+				}
+			}
 		}
 
 		private static void DumpKeys(SymmetricAlgorithm algorithm, string inputFileName)

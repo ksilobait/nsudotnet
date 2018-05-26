@@ -43,25 +43,25 @@ namespace Izhitsky.Nsudotnet.Enigma
 			}
 		}
 
-		private static SymmetricAlgorithm ParseMethod(string method)
+		private static Crypter.EncryptionMethod ParseMethod(string method)
 		{
 			switch (method.ToLower())
 			{
 				case "aes":
 				{
-					return Aes.Create();
+					return Crypter.EncryptionMethod.Aes;
 				}
 				case "des":
 				{
-					return DES.Create();
+					return Crypter.EncryptionMethod.Des;
 				}
 				case "rc2":
 				{
-					return RC2.Create();
+					return Crypter.EncryptionMethod.Rc2;
 				}
 				case "rijndael":
 				{
-					return Rijndael.Create();
+					return Crypter.EncryptionMethod.Rijndael;
 				}
 				default:
 				{

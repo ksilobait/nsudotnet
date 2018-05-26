@@ -9,5 +9,10 @@ namespace Izhitsky.Nsudotnet.Enigma
 	internal abstract class Crypter
 	{
 		internal abstract void Run();
+
+		public enum EncryptionMethod
+		{
+			Aes, Des, Rc2, Rijndael
+		}
 	}
 }
