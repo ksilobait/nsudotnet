@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Izhitsky.Nsudotnet.Calendar
 {
@@ -23,7 +24,7 @@ namespace Izhitsky.Nsudotnet.Calendar
 			var mondayToSunday = new DateTime(2018, 01, 01);
 			for (var i = 0; i < 7; i++)
 			{
-				Console.Write(" {0}", mondayToSunday.DayOfWeek.ToString().Substring(0, 2));
+				Console.Write(" {0}", DateTimeFormatInfo.CurrentInfo?.GetDayName(mondayToSunday.DayOfWeek).Substring(0, 2));
 				mondayToSunday = mondayToSunday.AddDays(1);
 			}
 
@@ -31,7 +32,7 @@ namespace Izhitsky.Nsudotnet.Calendar
 
 			// skip till first day
 			var currentTime = new DateTime(dateValue.Year, dateValue.Month, 1);
-			var x = currentTime.DayOfWeek.GetHashCode(); // 0 - Su, 1 - Mo, ..., 6 - Sa
+			var x = (int) currentTime.DayOfWeek; // 0 - Su, 1 - Mo, ..., 6 - Sa
 			if (x == 0)
 			{
 				x = 7;
