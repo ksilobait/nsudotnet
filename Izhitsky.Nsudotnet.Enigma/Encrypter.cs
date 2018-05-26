@@ -68,16 +68,11 @@ namespace Izhitsky.Nsudotnet.Enigma
 
 		private static void DumpKeys(SymmetricAlgorithm algorithm, string inputFileName)
 		{
-			var initializationVector = Encoding.UTF8.GetBytes(Convert.ToBase64String(algorithm.IV));
-			var breakLine = Encoding.UTF8.GetBytes("\n");
-			var key = Encoding.UTF8.GetBytes(Convert.ToBase64String(algorithm.Key));
-
 			var keyFileName = inputFileName.Replace(".txt", ".key.txt");
-			using (var keyFileStream = new FileStream(keyFileName, FileMode.Create))
+			using (var keyFileStream = new StreamWriter(new FileStream(keyFileName, FileMode.Create)))
 			{
-				keyFileStream.Write(initializationVector, 0, initializationVector.Length);
-				keyFileStream.Write(breakLine, 0, breakLine.Length);
-				keyFileStream.Write(key, 0, key.Length);
+				keyFileStream.WriteLine(Convert.ToBase64String(algorithm.IV));
+				keyFileStream.WriteLine(Convert.ToBase64String(algorithm.Key));
 			}
 		}
 
