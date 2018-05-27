@@ -47,7 +47,7 @@ namespace Izhitsky.Nsudotnet.NumberGuesser
 					var delta = endTime - initTime;
 					Console.WriteLine("\nCongratulations!");
 					Console.WriteLine("Total attempts: " + attempts);
-					Console.WriteLine("hours:mins:seconds : " + delta.ToString(@"hh\:mm\:ss"));
+					Console.WriteLine("Total minutes: " + (int) delta.TotalMinutes);
 					Console.WriteLine("History:");
 					for (var i = 0; i < Math.Min(attempts, 1000); i++)
 					{
