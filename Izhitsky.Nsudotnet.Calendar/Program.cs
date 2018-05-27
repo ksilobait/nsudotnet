@@ -24,7 +24,7 @@ namespace Izhitsky.Nsudotnet.Calendar
 			var mondayToSunday = new DateTime(2018, 01, 01);
 			for (var i = 0; i < 7; i++)
 			{
-				Console.Write(" {0}", DateTimeFormatInfo.CurrentInfo?.GetDayName(mondayToSunday.DayOfWeek).Substring(0, 2));
+				Console.Write(" {0}", DateTimeFormatInfo.CurrentInfo?.GetShortestDayName(mondayToSunday.DayOfWeek));
 				mondayToSunday = mondayToSunday.AddDays(1);
 			}
 
