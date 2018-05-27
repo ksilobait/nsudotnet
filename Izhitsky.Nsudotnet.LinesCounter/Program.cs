@@ -6,7 +6,7 @@ namespace Izhitsky.Nsudotnet.LinesCounter
 	class Program
 	{
 		private static int _totalLines;
-		private static bool _inMultilineComment; // false by default
+		private static bool _lineContainsValuableSymbols = false;
 
 		static void Main(string[] args)
 		{
@@ -32,70 +32,70 @@ namespace Izhitsky.Nsudotnet.LinesCounter
 
 		private static void ProcessFile(TextReader fileReader)
 		{
-			_inMultilineComment = false;
-			string line;
-			while ((line = fileReader.ReadLine()) != null)
+			var inSinglelineComment = false;
+			var inMultilineComment = false;
+
+			int someSymbol;
+			while ((someSymbol = fileReader.Read()) != -1)
 			{
-				line = line.Trim(); //TODO
-				if (line.Length == 0)
+				var current = (char) someSymbol;
+				var peeked = (char) fileReader.Peek();
+				if (current == ' ' || current == '\t')
 				{
 					continue;
 				}
 
-				var firstOnelineComment = line.IndexOf("//", StringComparison.Ordinal);
-				if (!_inMultilineComment)
+				if (inSinglelineComment)
 				{
-					if (firstOnelineComment == 0)
+					if (current == '\n')
 					{
-						continue;
+						inSinglelineComment = false;
 					}
-
-					SkipComments(line);
 				}
-				else // multiline comment started somewhere upper
+				else if (inMultilineComment)
 				{
-					var firstMultilineCommentEnd = line.IndexOf("*/", StringComparison.Ordinal);
-					if (firstMultilineCommentEnd == -1) // no closing comment
+					if (current == '\n')
 					{
-						continue;
+						LineEnd();
 					}
-
-					_inMultilineComment = false;
-					if (firstMultilineCommentEnd + 2 == line.Length)
+					else if (current == '*' && peeked == '/')
 					{
-						continue;
+						fileReader.Read(); //forward
+						inMultilineComment = false;
 					}
-
-					SkipComments(line);
+				}
+				else //no comment section
+				{
+					if (current == '\n')
+					{
+						LineEnd();
+					}
+					else if (current == '/' && peeked == '/')
+					{
+						fileReader.Read(); //forward
+						inSinglelineComment = true;
+						LineEnd();
+					}
+					else if (current == '/' && peeked == '*')
+					{
+						fileReader.Read(); //forward
+						inMultilineComment = true;
+					}
+					else //usual symbol
+					{
+						_lineContainsValuableSymbols = true;
+					}
 				}
 			}
 		}
 
-		private static void SkipComments(string line)
+		private static void LineEnd()
 		{
-			var firstMultilineComment = line.IndexOf("/*", StringComparison.Ordinal);
-			var firstMultilineCommentEnd = line.IndexOf("*/", StringComparison.Ordinal);
-			while (firstMultilineComment == 0)
+			if (_lineContainsValuableSymbols)
 			{
-				if (firstMultilineCommentEnd == -1) // comment goes down
-				{
-					_inMultilineComment = true;
-					break;
-				}
-
-				// something after /**/ comment
-				line = line.Substring(firstMultilineCommentEnd + 2); //TODO
-				firstMultilineComment = line.IndexOf("/*", StringComparison.Ordinal);
-				firstMultilineCommentEnd = line.IndexOf("*/", StringComparison.Ordinal);
+				_lineContainsValuableSymbols = false;
+				_totalLines++;
 			}
-
-			var firstOnelineComment = line.IndexOf("//", StringComparison.Ordinal);
-			if (_inMultilineComment || firstOnelineComment == 0)
-			{
-				return; //line consists only of comments
-			}
-
-			_totalLines++;
 		}
 	}
 }
